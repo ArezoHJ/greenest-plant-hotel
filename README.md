@@ -1,61 +1,94 @@
 # Greenest Plant Hotel
 
-Ett litet Java-program med dialogrutor som räknar ut hur mycket vätska en
-växt på Greenest ska få per dag. Programmet använder växtens namn för att
-hitta rätt växt, beräknar mängden och visar även vätsketypen.
+Ett litet Java-program som hjälper växthotellet Greenest att räkna ut hur
+mycket vätska varje växt behöver per dag. Skriv in växtens namn i en dialogruta
+så visar programmet rätt mängd och vätsketyp.
 
-## Kör programmet
+## Funktioner
 
-Öppna projektet i IntelliJ IDEA och kör `Main`. Projektet använder Maven;
-öppna projektmappen som ett Maven-projekt om IntelliJ inte redan har gjort det.
+- Beräknar vätskebehov för hotellets fyra växter.
+- Visar mängd, måttenhet och vätsketyp på svenska.
+- Hanterar tomma svar, felaktiga tecken och växtnamn som inte finns.
+- Låter användaren försöka igen efter ett fel.
+- Innehåller automatiska JUnit-tester för beräkningar och namnuppslagning.
 
-Kör alla automatiska JUnit-tester från projektmappen:
+## Exempel på resultat
 
-```text
+| Växt | Höjd | Vätska per dag |
+|---|---:|---|
+| Igge (kaktus) | 0,2 m | 2 cl mineralvatten |
+| Laura (palm) | 5 m | 2,5 liter kranvatten |
+| Meatloaf (köttätande växt) | 0,7 m | 0,24 liter proteindryck |
+| Olof (palm) | 1 m | 0,5 liter kranvatten |
+
+## Kom igång
+
+### Förutsättningar
+
+- Java Development Kit (JDK) 17 eller senare
+- Apache Maven
+
+### Starta programmet
+
+Öppna ett terminalfönster i projektmappen och kör:
+
+```bash
+mvn compile
+java -cp target/classes Main
+```
+
+Den första raden kompilerar programmet. Den andra startar det och visar
+dialogrutan. En grafisk skrivbordsmiljö krävs för att dialogrutorna ska synas.
+
+Du kan också öppna projektet i IntelliJ IDEA och köra `Main`.
+
+### Kör testerna
+
+```bash
 mvn test
 ```
 
-Maven kompilerar produktionskoden och testkoden, kör testerna och rapporterar
-om något test misslyckas. Testresultat sparas i `target/`, som inte ska checkas
-in i Git.
+Maven kompilerar koden och kör JUnit-testerna. Om ett test misslyckas visas
+vilket test som inte fick det förväntade resultatet. Testerna finns i
+`test/PlantHotelTest.java`.
 
-För att bara bygga och paketera projektet kan du köra `mvn package`.
+## Beräkningsregler
 
-## Växterna och beräkningarna
+- **Palmer:** 0,5 liter kranvatten per meter höjd och dag.
+- **Köttätande växter:** 0,1 liter proteindryck som bas, plus 0,2 liter per
+  meter höjd och dag.
+- **Kaktusar:** 2 cl mineralvatten per dag, oavsett höjd.
 
-| Växt | Höjd | Vätska | Mängd per dag |
-|---|---:|---|---:|
-| Igge | 0,2 m | mineralvatten | 2 cl |
-| Laura | 5 m | kranvatten | 2,5 liter |
-| Meatloaf | 0,7 m | proteindryck | 0,24 liter |
-| Olof | 1 m | kranvatten | 0,5 liter |
+## Struktur
 
-Palmer får 0,5 liter per meter. Köttätande växter får 0,1 liter plus
-0,2 liter per meter. Kaktusar får 2 cl oavsett höjd.
+```text
+src/                       Programmets Java-källkod
+test/                      Automatiska JUnit-tester
+pom.xml                    Maven-konfiguration och JUnit-beroende
+README.md                  Projektbeskrivning och instruktioner
+```
 
-## Hur koden är uppbyggd
+Växtklasserna ärver gemensamma egenskaper från `Plant` och räknar ut sitt
+vätskebehov var för sig. `PlantWateringApp` hanterar dialogerna och
+`PlantHotel` ansvarar för växtregistret.
 
-- `Plant` innehåller de gemensamma, privata växtuppgifterna. `Palm`,
-  `CarnivorousPlant` och `Cactus` ärver från den och har varsin beräkning.
-- `WaterCalculator` är ett interface med den beräkningsmetod som alla
-  växttyper behöver implementera. `PlantWateringApp` anropar samma metod på
-  den valda växten; den faktiska beräkningen väljs polymorfiskt.
-- `LiquidType` och `VolumeUnit` är enums. De begränsar vätsketyp och
-  volymenhet till värden som programmet känner till.
-- `PlantHotel` ansvarar för hotellets växter och uppslagning av namn.
-  `PlantWateringApp` ansvarar för dialoger och inmatningskontroll.
-- `WateringPlan` håller den beräknade mängden och formaterar den på svenska.
+## Teknik
 
-## Att prova manuellt
+- Java 17
+- Maven
+- JUnit 5
+- Swing (`JOptionPane`) för dialogrutorna
 
-Skriv in `Igge`, `Laura`, `Meatloaf` och `Olof` var för sig och kontrollera
-resultatet mot tabellen. Prova även ett tomt svar, `12`, `!!!` och ett namn
-som inte finns, till exempel `Bertil`. Felaktiga svar visar ett begripligt
-felmeddelande och låter dig försöka igen. Avbryt genom att stänga
-inmatningsrutan.
+## Skärmbilder
 
-## Tester
+**Fråga efter växt:**
 
-JUnit-testerna finns i `test/PlantHotelTest.java`. De kontrollerar alla fyra
-växters mängder, enheter och vätsketyper samt att namnuppslagningen fungerar
-med varierad versalisering och hanterar okända eller ogiltiga namn.
+![Dialogrutan där användaren skriver växtens namn](screenshots/plant-prompt.png)
+
+**Resultat för Igge:**
+
+![Igge ska få 2 cl mineralvatten per dag](screenshots/igge-result.png)
+
+**Exempel på felmeddelande:**
+
+![Programmet visar ett meddelande när inmatningen är fel](screenshots/input-error.png)

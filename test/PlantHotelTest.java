@@ -1,54 +1,69 @@
-import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class PlantHotelTest {
-    private static final PlantHotel HOTEL = PlantHotel.createGreenestHotel();
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    public static void main(String[] args) {
-        verifyPlant("Igge", "2", VolumeUnit.CENTILITER, LiquidType.MINERAL_WATER);
-        verifyPlant("Laura", "2,5", VolumeUnit.LITER, LiquidType.TAP_WATER);
-        verifyPlant("Meatloaf", "0,24", VolumeUnit.LITER, LiquidType.PROTEIN_DRINK);
-        verifyPlant("Olof", "0,5", VolumeUnit.LITER, LiquidType.TAP_WATER);
-        verifyNameLookupAndInvalidNames();
+class PlantHotelTest {
+    private PlantHotel hotel;
+
+    @BeforeEach
+    void setUp() {
+        hotel = PlantHotel.createGreenestHotel();
     }
 
-    private static void verifyPlant(
-            String name,
-            String expectedQuantity,
-            VolumeUnit expectedUnit,
-            LiquidType expectedLiquidType) {
-        Plant plant = HOTEL.findPlantByName(name)
-                .orElseThrow(() -> new AssertionError("Växt saknas: " + name));
+    @Test
+    void iggeGetsTwoCentilitersOfMineralWater() {
+        Plant plant = hotel.findPlantByName("Igge").orElseThrow();
         WateringPlan plan = plant.calculateWaterRequirement();
 
-        checkEquals(expectedQuantity, plan.getFormattedQuantity(), name + " mängd");
-        checkEquals(expectedUnit, plan.getUnit(), name + " volymenhet");
-        checkEquals(expectedLiquidType, plant.getLiquidType(), name + " vätsketyp");
+        assertEquals("2", plan.getFormattedQuantity());
+        assertEquals(VolumeUnit.CENTILITER, plan.getUnit());
+        assertEquals(LiquidType.MINERAL_WATER, plant.getLiquidType());
     }
 
-    private static void verifyNameLookupAndInvalidNames() {
-        checkTrue(HOTEL.findPlantByName(" lAuRa ").isPresent(), "Namn ska ignorerar skiftläge");
-        checkMissing("Bertil");
-        checkMissing("");
-        checkMissing("12");
-        checkMissing("!!!");
-        checkMissing(null);
+    @Test
+    void lauraGetsTwoAndAHalfLitersOfTapWater() {
+        Plant plant = hotel.findPlantByName("Laura").orElseThrow();
+        WateringPlan plan = plant.calculateWaterRequirement();
+
+        assertEquals("2,5", plan.getFormattedQuantity());
+        assertEquals(VolumeUnit.LITER, plan.getUnit());
+        assertEquals(LiquidType.TAP_WATER, plant.getLiquidType());
     }
 
-    private static void checkMissing(String name) {
-        Optional<Plant> plant = HOTEL.findPlantByName(name);
-        checkTrue(plant.isEmpty(), "Okänt namn ska inte matcha en växt");
+    @Test
+    void meatloafGets024LitersOfProteinDrink() {
+        Plant plant = hotel.findPlantByName("Meatloaf").orElseThrow();
+        WateringPlan plan = plant.calculateWaterRequirement();
+
+        assertEquals("0,24", plan.getFormattedQuantity());
+        assertEquals(VolumeUnit.LITER, plan.getUnit());
+        assertEquals(LiquidType.PROTEIN_DRINK, plant.getLiquidType());
     }
 
-    private static void checkEquals(Object expected, Object actual, String description) {
-        if (!expected.equals(actual)) {
-            throw new AssertionError(
-                    description + ": förväntade " + expected + ", fick " + actual);
-        }
+    @Test
+    void olofGetsHalfALiterOfTapWater() {
+        Plant plant = hotel.findPlantByName("Olof").orElseThrow();
+        WateringPlan plan = plant.calculateWaterRequirement();
+
+        assertEquals("0,5", plan.getFormattedQuantity());
+        assertEquals(VolumeUnit.LITER, plan.getUnit());
+        assertEquals(LiquidType.TAP_WATER, plant.getLiquidType());
     }
 
-    private static void checkTrue(boolean condition, String description) {
-        if (!condition) {
-            throw new AssertionError(description);
-        }
+    @Test
+    void plantLookupIgnoresCaseAndSurroundingWhitespace() {
+        assertTrue(hotel.findPlantByName(" lAuRa ").isPresent());
+    }
+
+    @Test
+    void unknownAndInvalidNamesDoNotFindAPlant() {
+        assertFalse(hotel.findPlantByName("Bertil").isPresent());
+        assertFalse(hotel.findPlantByName("").isPresent());
+        assertFalse(hotel.findPlantByName("12").isPresent());
+        assertFalse(hotel.findPlantByName("!!!").isPresent());
+        assertFalse(hotel.findPlantByName(null).isPresent());
     }
 }

@@ -6,22 +6,20 @@ hitta rätt växt, beräknar mängden och visar även vätsketypen.
 
 ## Kör programmet
 
-Öppna projektet i IntelliJ IDEA och kör `Main`.
+Öppna projektet i IntelliJ IDEA och kör `Main`. Projektet använder Maven;
+öppna projektmappen som ett Maven-projekt om IntelliJ inte redan har gjort det.
 
-Det går också att kompilera och köra från projektmappen:
-
-```text
-javac -d out src/*.java
-java -cp out Main
-```
-
-Kör de automatiska kontrollerna av växternas beräkningar och namnuppslagning
-från projektmappen:
+Kör alla automatiska JUnit-tester från projektmappen:
 
 ```text
-javac -d out src/*.java test/*.java
-java -cp out PlantHotelTest
+mvn test
 ```
+
+Maven kompilerar produktionskoden och testkoden, kör testerna och rapporterar
+om något test misslyckas. Testresultat sparas i `target/`, som inte ska checkas
+in i Git.
+
+För att bara bygga och paketera projektet kan du köra `mvn package`.
 
 ## Växterna och beräkningarna
 
@@ -55,3 +53,9 @@ resultatet mot tabellen. Prova även ett tomt svar, `12`, `!!!` och ett namn
 som inte finns, till exempel `Bertil`. Felaktiga svar visar ett begripligt
 felmeddelande och låter dig försöka igen. Avbryt genom att stänga
 inmatningsrutan.
+
+## Tester
+
+JUnit-testerna finns i `test/PlantHotelTest.java`. De kontrollerar alla fyra
+växters mängder, enheter och vätsketyper samt att namnuppslagningen fungerar
+med varierad versalisering och hanterar okända eller ogiltiga namn.

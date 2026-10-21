@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1120" viewBox="0 0 1400 1120" role="img" aria-labelledby="title description">
+  <title id="title">Klassdiagram för Greenest Plant Hotel</title>
+  <desc id="description">Diagram över appens start, dialogflöde, växtklasser, beräkningsinterface, resultat och enums.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#334155"/>
+    </marker>
+    <marker id="inheritance" markerWidth="16" markerHeight="16" refX="14" refY="8" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 1 L14 8 L1 15 Z" fill="#ffffff" stroke="#334155" stroke-width="1.8"/>
+    </marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #172033; }
+      .title { font-size: 30px; font-weight: 700; }
+      .subtitle { font-size: 16px; fill: #475569; }
+      .class-name { font-size: 20px; font-weight: 700; }
+      .stereotype { font-size: 13px; font-style: italic; fill: #475569; }
+      .member { font-size: 15px; }
+      .relation { font-size: 14px; font-weight: 600; fill: #334155; }
+      .divider { stroke: #cbd5e1; stroke-width: 1.5; }
+      .edge { fill: none; stroke: #334155; stroke-width: 2.5; }
+      .dependency { stroke-dasharray: 8 6; }
+      .box { stroke-width: 2.5; rx: 12; }
+      .app-box { fill: #e8f1ff; stroke: #3b6fb6; }
+      .domain-box { fill: #e8f5e9; stroke: #4a8a54; }
+      .contract-box { fill: #fff4d6; stroke: #b88720; }
+      .value-box { fill: #f2eafe; stroke: #8054a6; }
+      .legend-text { font-size: 14px; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="1120" fill="#ffffff"/>
+  <text class="title" x="48" y="52">Greenest Plant Hotel – klassdiagram</text>
+  <text class="subtitle" x="48" y="80">Rutorna visar klasser och deras ansvar. Pilarna visar hur objekt och typer samarbetar.</text>
+
+  <!-- Relationer ritas före klassrutorna så linjerna hamnar bakom rutorna. -->
+  <path class="edge dependency" d="M330 160 H440" marker-end="url(#arrow)"/>
+  <text class="relation" x="350" y="148">startar</text>
+
+  <path class="edge dependency" d="M870 160 H1000" marker-end="url(#arrow)"/>
+  <text class="relation" x="895" y="148">söker växt</text>
+
+  <path class="edge" d="M1000 190 H955 V300 H900 V350" marker-end="url(#arrow)"/>
+  <path d="M1000 181 L1009 190 L1000 199 L991 190 Z" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text class="relation" x="920" y="286">innehåller</text>
+
+  <path class="edge dependency" d="M500 420 H420" marker-end="url(#inheritance)"/>
+  <text class="relation" x="425" y="408">implementerar</text>
+
+  <path class="edge" d="M900 440 H1000" marker-end="url(#arrow)"/>
+  <text class="relation" x="912" y="428">har vätsketyp</text>
+
+  <path class="edge" d="M240 690 V635 H590 V560" marker-end="url(#inheritance)"/>
+  <text class="relation" x="360" y="625">ärver</text>
+  <path class="edge" d="M670 690 V560" marker-end="url(#inheritance)"/>
+  <text class="relation" x="680" y="625">ärver</text>
+  <path class="edge" d="M1110 690 V635 H810 V560" marker-end="url(#inheritance)"/>
+  <text class="relation" x="920" y="625">ärver</text>
+
+  <path class="edge dependency" d="M900 530 H920 V870 H850 V885" marker-end="url(#arrow)"/>
+  <text class="relation" x="930" y="720" transform="rotate(90 930 720)">returnerar WateringPlan</text>
+
+  <path class="edge" d="M880 960 H990" marker-end="url(#arrow)"/>
+  <text class="relation" x="892" y="948">har enhet</text>
+
+  <!-- Start och användarflöde -->
+  <g>
+    <rect class="box app-box" x="80" y="110" width="250" height="100"/>
+    <text class="class-name" x="205" y="148" text-anchor="middle">Main</text>
+    <line class="divider" x1="80" y1="164" x2="330" y2="164"/>
+    <text class="member" x="100" y="190">main(args)</text>
+  </g>
+  <g>
+    <rect class="box app-box" x="440" y="100" width="430" height="120"/>
+    <text class="class-name" x="655" y="138" text-anchor="middle">PlantWateringApp</text>
+    <line class="divider" x1="440" y1="154" x2="870" y2="154"/>
+    <text class="member" x="460" y="180">plantHotel</text>
+    <text class="member" x="460" y="204">start() · visar dialoger och validerar inmatning</text>
+  </g>
+  <g>
+    <rect class="box domain-box" x="1000" y="100" width="330" height="180"/>
+    <text class="class-name" x="1165" y="138" text-anchor="middle">PlantHotel</text>
+    <line class="divider" x1="1000" y1="154" x2="1330" y2="154"/>
+    <text class="member" x="1020" y="180">plantsByName</text>
+    <line class="divider" x1="1000" y1="194" x2="1330" y2="194"/>
+    <text class="member" x="1020" y="222">createGreenestHotel()</text>
+    <text class="member" x="1020" y="250">findPlantByName(name)</text>
+  </g>
+
+  <!-- Gemensam växtmodell och beräkningskontrakt -->
+  <g>
+    <rect class="box contract-box" x="80" y="350" width="340" height="140"/>
+    <text class="stereotype" x="250" y="380" text-anchor="middle">&lt;&lt;interface&gt;&gt;</text>
+    <text class="class-name" x="250" y="410" text-anchor="middle">WaterCalculator</text>
+    <line class="divider" x1="80" y1="426" x2="420" y2="426"/>
+    <text class="member" x="100" y="456">calculateWaterRequirement()</text>
+    <text class="member" x="100" y="478">returnerar WateringPlan</text>
+  </g>
+  <g>
+    <rect class="box domain-box" x="500" y="350" width="400" height="210"/>
+    <text class="stereotype" x="700" y="380" text-anchor="middle">&lt;&lt;abstract&gt;&gt;</text>
+    <text class="class-name" x="700" y="410" text-anchor="middle">Plant</text>
+    <line class="divider" x1="500" y1="426" x2="900" y2="426"/>
+    <text class="member" x="520" y="454">name: String</text>
+    <text class="member" x="520" y="478">heightInMeters: double</text>
+    <text class="member" x="520" y="502">liquidType: LiquidType</text>
+    <line class="divider" x1="500" y1="516" x2="900" y2="516"/>
+    <text class="member" x="520" y="542">gemensamma data och validering</text>
+  </g>
+  <g>
+    <rect class="box value-box" x="1000" y="350" width="330" height="180"/>
+    <text class="stereotype" x="1165" y="380" text-anchor="middle">&lt;&lt;enum&gt;&gt;</text>
+    <text class="class-name" x="1165" y="410" text-anchor="middle">LiquidType</text>
+    <line class="divider" x1="1000" y1="426" x2="1330" y2="426"/>
+    <text class="member" x="1020" y="454">TAP_WATER</text>
+    <text class="member" x="1020" y="478">MINERAL_WATER</text>
+    <text class="member" x="1020" y="502">PROTEIN_DRINK</text>
+  </g>
+
+  <!-- Växttyperna ärver från Plant och implementerar varsin formel. -->
+  <g>
+    <rect class="box domain-box" x="80" y="690" width="320" height="130"/>
+    <text class="class-name" x="240" y="730" text-anchor="middle">Cactus</text>
+    <line class="divider" x1="80" y1="746" x2="400" y2="746"/>
+    <text class="member" x="100" y="775">2 cl mineralvatten per dag</text>
+    <text class="member" x="100" y="800">höjden påverkar inte mängden</text>
+  </g>
+  <g>
+    <rect class="box domain-box" x="510" y="690" width="320" height="130"/>
+    <text class="class-name" x="670" y="730" text-anchor="middle">Palm</text>
+    <line class="divider" x1="510" y1="746" x2="830" y2="746"/>
+    <text class="member" x="530" y="780">0,5 liter × höjd i meter</text>
+  </g>
+  <g>
+    <rect class="box domain-box" x="940" y="690" width="340" height="130"/>
+    <text class="class-name" x="1110" y="730" text-anchor="middle">CarnivorousPlant</text>
+    <line class="divider" x1="940" y1="746" x2="1280" y2="746"/>
+    <text class="member" x="960" y="780">0,1 + (0,2 × höjd) liter</text>
+  </g>
+
+  <!-- Beräkningsresultat och enhet -->
+  <g>
+    <rect class="box value-box" x="500" y="885" width="380" height="150"/>
+    <text class="class-name" x="690" y="925" text-anchor="middle">WateringPlan</text>
+    <line class="divider" x1="500" y1="941" x2="880" y2="941"/>
+    <text class="member" x="520" y="970">quantity: double</text>
+    <text class="member" x="520" y="994">unit: VolumeUnit</text>
+    <text class="member" x="520" y="1018">formaterar mängden på svenska</text>
+  </g>
+  <g>
+    <rect class="box value-box" x="990" y="900" width="340" height="120"/>
+    <text class="stereotype" x="1160" y="930" text-anchor="middle">&lt;&lt;enum&gt;&gt;</text>
+    <text class="class-name" x="1160" y="960" text-anchor="middle">VolumeUnit</text>
+    <line class="divider" x1="990" y1="976" x2="1330" y2="976"/>
+    <text class="member" x="1010" y="1005">LITER · CENTILITER</text>
+  </g>
+
+  <!-- Färgförklaring -->
+  <g transform="translate(80 1070)">
+    <rect x="0" y="-15" width="18" height="18" rx="4" fill="#e8f1ff" stroke="#3b6fb6" stroke-width="2"/>
+    <text class="legend-text" x="28" y="0">Start och användargränssnitt</text>
+    <rect x="300" y="-15" width="18" height="18" rx="4" fill="#e8f5e9" stroke="#4a8a54" stroke-width="2"/>
+    <text class="legend-text" x="328" y="0">Växtmodell</text>
+    <rect x="470" y="-15" width="18" height="18" rx="4" fill="#fff4d6" stroke="#b88720" stroke-width="2"/>
+    <text class="legend-text" x="498" y="0">Interface</text>
+    <rect x="630" y="-15" width="18" height="18" rx="4" fill="#f2eafe" stroke="#8054a6" stroke-width="2"/>
+    <text class="legend-text" x="658" y="0">Resultat och enum</text>
+  </g>
+</svg>

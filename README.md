@@ -74,117 +74,17 @@ vätskebehov var för sig. `PlantWateringApp` hanterar dialogerna och
 
 ## Klassdiagram
 
-Färgerna grupperar klasser efter ansvar: blått är programmets start och
-gränssnitt, grönt är växtmodellen, gult är beräkningskontraktet och lila är
-resultat och typer. Den röda klassen innehåller automatiska tester.
+Diagrammet är en SVG-bild med fast layout och färger, så text och pilar
+förblir tydliga oavsett om GitHub visas med ljust eller mörkt tema.
 
-En pil med öppen triangel visar arv eller implementation av ett interface.
-Diamanten vid `Plant` visar att hotellet innehåller växter. Streckade pilar
-visar att en klass använder en annan.
+![Klassdiagram över Greenest Plant Hotel](docs/class-diagram.svg)
 
-```mermaid
-%%{init: {"theme":"base","themeVariables":{"background":"#ffffff","primaryColor":"#ffffff","primaryTextColor":"#172033","primaryBorderColor":"#64748b","lineColor":"#facc15","edgeLabelBackground":"#24292f","textColor":"#f8fafc"}}}%%
-classDiagram
-    direction TB
-
-    class Main {
-        +main(String[] args)
-    }
-
-    class PlantWateringApp {
-        -PlantHotel plantHotel
-        +start()
-        -showWateringRequirement(Plant plant)
-    }
-
-    class PlantHotel {
-        -Map~String, Plant~ plantsByName
-        +createGreenestHotel() PlantHotel
-        +findPlantByName(String name) Optional~Plant~
-    }
-
-    class Plant {
-        <<abstract>>
-        -String name
-        -double heightInMeters
-        -LiquidType liquidType
-        +getName() String
-        +getLiquidType() LiquidType
-    }
-
-    class WaterCalculator {
-        <<interface>>
-        calculateWaterRequirement() WateringPlan
-    }
-
-    class Palm {
-        +calculateWaterRequirement() WateringPlan
-    }
-
-    class Cactus {
-        +calculateWaterRequirement() WateringPlan
-    }
-
-    class CarnivorousPlant {
-        +calculateWaterRequirement() WateringPlan
-    }
-
-    class WateringPlan {
-        -double quantity
-        -VolumeUnit unit
-        +getFormattedQuantity() String
-        +getUnit() VolumeUnit
-    }
-
-    class LiquidType {
-        <<enumeration>>
-        TAP_WATER
-        MINERAL_WATER
-        PROTEIN_DRINK
-    }
-
-    class VolumeUnit {
-        <<enumeration>>
-        LITER
-        CENTILITER
-    }
-
-    class PlantHotelTest {
-        <<test>>
-    }
-
-    Main ..> PlantWateringApp : startar
-    PlantWateringApp --> PlantHotel : söker växt
-    PlantHotel o-- Plant : innehåller
-    Plant ..|> WaterCalculator : implementerar
-    Palm --|> Plant : ärver
-    Cactus --|> Plant : ärver
-    CarnivorousPlant --|> Plant : ärver
-    Plant --> LiquidType : har vätsketyp
-    WaterCalculator ..> WateringPlan : returnerar
-    WateringPlan --> VolumeUnit : har enhet
-    PlantHotelTest ..> PlantHotel : testar uppslagning
-    PlantHotelTest ..> WateringPlan : testar beräkningar
-
-    classDef app fill:#e8f1ff,stroke:#3b6fb6,color:#142b4d,stroke-width:2px
-    classDef domain fill:#e8f5e9,stroke:#4a8a54,color:#18391d,stroke-width:2px
-    classDef contract fill:#fff4d6,stroke:#b88720,color:#493500,stroke-width:2px
-    classDef value fill:#f2eafe,stroke:#8054a6,color:#302044,stroke-width:2px
-    classDef testing fill:#fce8e6,stroke:#b5544b,color:#4a1f1b,stroke-width:2px
-
-    class Main app
-    class PlantWateringApp app
-    class PlantHotel domain
-    class Plant domain
-    class Palm domain
-    class Cactus domain
-    class CarnivorousPlant domain
-    class WaterCalculator contract
-    class WateringPlan value
-    class LiquidType value
-    class VolumeUnit value
-    class PlantHotelTest testing
-```
+Blå rutor visar programmets start och användargränssnitt. Gröna rutor visar
+växtregistret och växtklasserna. Den gula rutan är beräkningsinterfacet och
+lila rutor visar resultat och enum-typer. Heldragna pilar med öppen triangel
+visar arv; den streckade pilen med öppen triangel visar interface-
+implementation. Övriga pilar visar att en klass använder eller innehåller en
+annan.
 
 ## Teknik
 

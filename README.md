@@ -83,8 +83,10 @@ Blå rutor visar programmets start och användargränssnitt. Gröna rutor visar
 växtregistret och växtklasserna. Den gula rutan är beräkningsinterfacet och
 lila rutor visar resultat och enum-typer. Heldragna pilar med öppen triangel
 visar arv; den streckade pilen med öppen triangel visar interface-
-implementation. Övriga pilar visar att en klass använder eller innehåller en
-annan.
+implementation. Den röda `PlantHotelTest`-rutan visar JUnit-testklassen.
+Dess streckade pilar visar att testerna kontrollerar hotellets namnuppslagning
+och växternas beräkningsresultat. Övriga pilar visar att en klass använder
+eller innehåller en annan.
 
 ## Teknik
 
